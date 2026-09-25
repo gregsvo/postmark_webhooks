@@ -3,8 +3,11 @@ Flask app for incoming Postmark Webhooks
 
 ## Demo
 
-The `demo/` folder contains a minimal Flask app (`main.py`) that receives a
-Postmark bounce webhook, checks HTTP Basic Auth, and logs the bounce details.
+The `demo/` folder contains a minimal Flask app (`main.py`) with a single
+`/` endpoint that checks HTTP Basic Auth, then dispatches each incoming
+Postmark event (Bounce, Open, Click, SpamComplaint, Delivery,
+SubscriptionChange) to its own handler in `events/` based on the payload's
+`RecordType`.
 
 ### Setup
 
@@ -16,7 +19,7 @@ cp .env.example .env
 ```
 
 Edit `.env` and set `WEBHOOK_USER` / `WEBHOOK_PASS` to the credentials you
-want the webhook to require. `.env` is gitignored, so it stays local.
+want the webhook to require. (.env is git ignored)
 
 ### Run
 
@@ -29,6 +32,5 @@ The server listens on `http://127.0.0.1:5000` (override with `PORT` in
 
 ### Test it
 
-Test it in the Postmark Webhook creation dashboard, or by running the test_webhook.sh script:
-
-`./demo/test_webhook.sh`
+Use the "Send test" option in the Postmark Webhook creation dashboard to send a
+sample event to your running server.
